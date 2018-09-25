@@ -1,0 +1,180 @@
+﻿作業 1
+
+程式碼:
+include <stdlib.h>
+include <stdio.h>
+
+int main(int argc, char *argv[]){
+    int num1,num2,temp;
+    scanf("%d",&num1);
+    scanf("%d",&num2);
+    while(num1 % num2 != 0){
+        temp = num2;
+        num2 = num1 % num2;
+        num1 = temp;
+    }
+    printf("%d",num2);
+    return 0;
+}
+操作方式:
+1. 輸入指令: vi hw1.c
+2. 輸入程式碼 存檔並離開:wq
+3  修改PATH = /usr/local/bin
+4. 輸入指令: gcc -c hw1.c
+5. 輸入指令: gcc -o hw1 hw1.o
+6. 輸入指令: ./hw1
+////////////////////////////////////////////////////////////////////
+作業 2
+
+輸入vi gcd.bash
+程式碼:
+#!/bin/bash
+read -p "please enter an integer m:" m
+read -p "please enter an integer n:" n
+while [ "$n" != "0" ]
+do
+    r=$(($m % $n))
+    m=$n
+    n=$r
+done
+echo "GCD:$m"
+操作方式:
+chmod 755 hw2
+./gcd.sh
+////////////////////////////////////////////////////////////////////
+作業 3
+用檔案管理連至學校myweb的ftp
+在public_html的資料夾中新增
+index.html成為自己的首頁
+////////////////////////////////////////////////////////////////////
+作業 4
+
+操作模式:
+1.輸入: vi hw4.sh
+2.打完code後，指令wq存檔並離開vi
+3.輸入: chmod u+x hw4.sh
+4.輸入: hw4.sh
+
+Code:
+#!/bin/bash
+
+student=$(cat "/etc/passwd" | grep '^d0' | cut -c 1-8)
+for s in $student
+do
+    id="/student/iecs/1052/"$s"/id.txt"
+    test -e $s && cat $id || echo "$s"
+done
+exit 0
+---------------------------------
+////////////////////////////////////////////////////////////////////
+作業 5
+
+操作模式:
+1.輸入: vi hw5.sh
+2.打完code後，指令wq存檔並離開vi
+3.輸入: chmod u+x hw5.sh
+4.輸入: hw5.sh
+
+程式碼:
+#!/bin/bash
+
+student=$(cat "/etc/passwd" | grep '^d0' | cut -c 1-8)
+for s in $student
+do
+    id="/student/iecs/1052/"$s"/id.txt"
+    test -e $s && cat $id; cat $id >> unixstd.txt || echo "$s"
+done
+
+for s in $student
+do
+    id="/student/iecs/1052/"$s"/id.txt"
+    test -e $s || echo "$s" >> unixstd.txt
+done
+
+exit 0
+////////////////////////////////////////////////////////////////////
+作業 6
+
+在終端機輸入vi std2018.sh，並輸入
+以下程式碼並儲存離開
+#!/bin/bash
+echo '<html>'
+echo '<head>'
+echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
+echo '<title> UNIX 2018/02  </title>'
+echo '</head>'
+echo '<body>'
+echo '<h3> UNIX ==>  2018/02 ,  IECS Compter !</h3> <hr>'
+std=$(cat unix2018.data)
+p="http://myweb.fcu.edu.tw/~"
+n=1
+for a in $std
+do
+echo "*** <a href=$p$a target="_blank"> $n </a>  "
+n=$(($n + 1))
+r=$(($n % 10))
+if [ $r -eq 1 ]
+then
+echo "<br> <br>"
+fi
+done
+echo '<hr>'
+echo '</body>'
+echo '</html>'
+exit 0
+////////////////////////////////////////////////////////////////////
+作業7
+在終端機輸入vi stdent2018.sh，並輸入
+以下程式碼並儲存離開
+
+#!/bin/bash
+student=$(cat "/export/home/kklin/std.txt")
+online=$(who | cut -c 1-8 | sort)
+exist=0
+x=0
+echo "上線名單："
+for o in $online
+do
+    seat_num=0
+    for s in $student
+    do
+         seat_num=$(($seat_num+1))
+         if [ "$o" == "$s" ]; then
+            echo "座號:$seat_num 學號:$o"
+         fi
+    done
+    x=$(($x+1))
+done
+echo '<br>'
+echo ">>上線人數:$x"
+seat_num=0
+y=0
+echo "<br> <br>"
+echo ">>未登入系統名單："
+for s in $student
+do
+    seat_num=$(($seat_num+1))
+   for o in $online
+   do
+      if [ "$s" == "$o" ]; then
+         exist=1
+         break
+      fi   
+   done
+   if [ "$exist" == 0 ]; then
+      echo "座號:$seat_num 學號:$s"
+      y=$(($y+1))
+   fi
+   exist=0
+done
+echo '<br>'
+echo "未登入系統人數:$y"
+z=0
+z=$(($x+$y))
+echo "<br> <br>"
+echo "(全體人數共$z人)"
+exit 0
+
+
+
+
